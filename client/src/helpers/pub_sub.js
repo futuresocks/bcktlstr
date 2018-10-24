@@ -1,6 +1,14 @@
 const PubSub = {
-  publish: (channel, payload) => document.dispatchEvent(new CustomEvent(channel, {detail: payload;})),
-  subscribe: (channel, callback) => document.addEventListener(channel, callback);
+  publish: (channel, payload) => {
+    // console.log(channel, payload);
+    const event = new CustomEvent(channel, {
+      detail: payload
+    });
+    document.dispatchEvent(event);
+  },
+  subscribe: (channel, callback) => {
+    document.addEventListener(channel, callback);
+  }
 }
 
 module.exports = PubSub;
