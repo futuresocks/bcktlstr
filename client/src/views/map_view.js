@@ -24,7 +24,6 @@ MapView.prototype.bindEvents = function () {
 };
 
 MapView.prototype.countryFocus = function (country) {
-  // document.getElementsByTagName('audio')[0].play();
   this.map.flyTo(country.latlng, 10);
 };
 
