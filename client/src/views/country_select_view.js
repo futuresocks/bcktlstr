@@ -18,7 +18,7 @@ CountrySelectView.prototype.populate = function(countries){
     this.element.appendChild(option);
   });
   this.element.addEventListener('change', (event) => {
-    console.log(event.target.value);
+    PubSub.publish('CountrySelect:country-selected', event.target.value);
   })
 }
 

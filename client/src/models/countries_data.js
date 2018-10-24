@@ -8,6 +8,9 @@ const Countries = function(){
 
 Countries.prototype.bindEvents = function () {
   this.getData();
+  PubSub.subscribe('CountrySelect:country-selected', (evt) => {
+    this.selectCountry(evt.detail);
+  });
 };
 
 Countries.prototype.getData = function () {
@@ -15,6 +18,11 @@ Countries.prototype.getData = function () {
     this.data = data;
     PubSub.publish('Countries:data-ready', this.data);
   })
+};
+
+Countries.prototype.selectCountry = function (index) {
+  let selectedCountry = this.data[index];
+  PubSub.publish('Countries:country-selected', selectedCountry);
 };
 
 module.exports = Countries;

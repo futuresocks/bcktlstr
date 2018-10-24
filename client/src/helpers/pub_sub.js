@@ -1,6 +1,5 @@
 const PubSub = {
   publish: (channel, payload) => {
-    // console.log(channel, payload);
     const event = new CustomEvent(channel, {
       detail: payload
     });
