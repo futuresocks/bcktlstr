@@ -3,7 +3,7 @@ const PubSub = require('../helpers/pub_sub.js');
 const MapView = function(container){
   this.osmLayer = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
   this.map = L.map(container)
-  .setView([0,0], 1)
+  .setView([0,0], 2)
   .addLayer(this.osmLayer);
 }
 
@@ -24,7 +24,7 @@ MapView.prototype.bindEvents = function () {
 };
 
 MapView.prototype.countryFocus = function (country) {
-  this.map.flyTo(country.latlng, 10);
+  this.map.flyTo(country.latlng, 9);
 };
 
 MapView.prototype.addMarkers = function (countries){
@@ -32,7 +32,6 @@ MapView.prototype.addMarkers = function (countries){
     let marker = L.marker(country.latlng)
     .addTo(this.map)
     .on('click', event => {
-      // marker.remove();
       PubSub.publish('MapView:marker-clicked', country)})
     });
   }

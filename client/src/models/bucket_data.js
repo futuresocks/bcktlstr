@@ -23,23 +23,25 @@ BucketList.prototype.bindEvents = function () {
 BucketList.prototype.getData = function () {
   this.request.get().then((data) => {
     this.data = data;
-    console.log(this.data);
     PubSub.publish('Bucketlist:data-ready', this.data);
   })
 };
 
 BucketList.prototype.createBucketEntry = function (country) {
-  this.request.post(country).then((data) => {
-    this.data = data;
-    PubSub.publish('Bucketlist:data-ready', this.data);
-  });
-};
+  if(!this.data.some(bucketItem => bucketItem.name === country.name)){
+    this.request.post(country).then((data) => {
+      this.data = data;
+      PubSub.publish('Bucketlist:data-ready', this.data);
+    });
+  }else{
+    window.alert('This country is already in your list!')
+  }};
 
-BucketList.prototype.deleteBucketEntry = function (country) {
-  this.request.delete(country["_id"]).then((data) => {
-    this.data = data;
-    PubSub.publish('Bucketlist:data-ready', this.data);
-  })
-};
+  BucketList.prototype.deleteBucketEntry = function (country) {
+    this.request.delete(country["_id"]).then((data) => {
+      this.data = data;
+      PubSub.publish('Bucketlist:data-ready', this.data);
+    })
+  };
 
-module.exports = BucketList;
+  module.exports = BucketList;
