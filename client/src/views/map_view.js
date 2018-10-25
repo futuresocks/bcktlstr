@@ -13,6 +13,7 @@ MapView.prototype.bindEvents = function () {
   });
 
   PubSub.subscribe('Bucketlist:data-ready', (event) => {
+    this.clearMarkers();
     this.addMarkers(event.detail);
   })
 
@@ -27,7 +28,6 @@ MapView.prototype.countryFocus = function (country) {
 };
 
 MapView.prototype.addMarkers = function (countries){
-  this.clearMarkers();
   countries.forEach(country => {
     let marker = L.marker(country.latlng)
     .addTo(this.map)
