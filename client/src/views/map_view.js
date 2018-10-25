@@ -1,11 +1,10 @@
 const PubSub = require('../helpers/pub_sub.js');
 
 const MapView = function(container){
-  const osmLayer = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
-
+  this.osmLayer = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
   this.map = L.map(container)
-            .setView([0,0], 1)
-            .addLayer(osmLayer);
+  .setView([0,0], 1)
+  .addLayer(this.osmLayer);
 }
 
 MapView.prototype.bindEvents = function () {
@@ -28,14 +27,21 @@ MapView.prototype.countryFocus = function (country) {
 };
 
 MapView.prototype.addMarkers = function (countries){
+  this.clearMarkers();
   countries.forEach(country => {
     let marker = L.marker(country.latlng)
     .addTo(this.map)
     .on('click', event => {
-      marker.remove();
+      // marker.remove();
       PubSub.publish('MapView:marker-clicked', country)})
-  });
-}
+    });
+  }
 
+  MapView.prototype.clearMarkers = function () {
+    this.map.eachLayer(layer => {
+      if(layer !== this.osmLayer){
+        this.map.removeLayer(layer)};
+      });
+    };
 
-module.exports = MapView;
+    module.exports = MapView;
